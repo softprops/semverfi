@@ -1,6 +1,6 @@
 # semverfi
 
-Always faithful, always loyal [semantic versioning][sm]
+Always faithful, always loyal [semantic versioning][sv]
 
 Doug Tangren (softprops) 2012
 
