@@ -39,7 +39,7 @@ val parsed = (List.empty[SemVersion] /: shuffled)((a, e) =>
   }
 )
 
-// print list of sorted version
+// print list of sorted versions
 parsed.sorted.foreach(println)
 ```
 
