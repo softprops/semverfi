@@ -1,6 +1,6 @@
 # semverfi
 
-A library for parsing querying and ordering the always faithful, always loyal [semantic versions][sv]
+A library for parsing, querying, and ordering the always faithful, always loyal [semantic versions][sv]
 
 ## usage
 
