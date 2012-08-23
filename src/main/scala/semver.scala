@@ -4,16 +4,9 @@ package semverfi
 
 object Version {
   def apply(in: String): Either[Invalid, SemVersion] =
-    in match {
-      case Normal.Pattern(ma, mi, pa) =>
-        Right(Normal.Version(ma.toInt, mi.toInt, pa.toInt))
-      case PreRelease.Pattern(ma, mi, pa, ex) =>
-        Right(PreRelease.Version(ma.toInt, mi.toInt, pa.toInt,
-                                 ex.split('.').toSeq))
-      case Build.Pattern(ma, mi, pa, _, ex) =>
-        Right(Build.Version(ma.toInt, mi.toInt, pa.toInt,
-                            ex.split('.').toSeq))
-      case _ => Left(Invalid(in))
+    Parse(in) match {
+      case i: Invalid => Left(i)
+      case v => Right(v)
     }
 }
 
@@ -30,13 +23,6 @@ case class Invalid(raw: String) extends SemVersion {
 }
 
 object Normal {
-  val PatternBase =
-                ("""(\d+)"""+ // major
-                "[.]"      +
-                """(\d+)"""+ // minor
-                "[.]"      +
-                """(\d+)""") // patch
-  val Pattern = PatternBase.r
   abstract class AbstractVersion(major: Int, minor: Int, patch: Int)
            extends SemVersion
   case class Version(major: Int, minor: Int, patch: Int)
@@ -44,9 +30,6 @@ object Normal {
 }
 
 object PreRelease {
-  val Pattern = (Normal.PatternBase +
-                "-" +
-                """([0-9A-Za-z-.]+)""").r
   case class Version(major: Int,
                      minor: Int,
                      patch: Int,
@@ -55,10 +38,6 @@ object PreRelease {
 }
 
 object Build {
-  val Pattern = (Normal.PatternBase +
-                 "(-[0-9A-Za-z-.]+)?" +
-                "[+]" +
-                """([0-9A-Za-z-.]+)""").r
   case class Version(major: Int,
                      minor: Int,
                      patch: Int,
