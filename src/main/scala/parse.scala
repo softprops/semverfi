@@ -14,16 +14,11 @@ object Parse extends RegexParsers {
 
   def int: Parser[String] = """\d+""".r
 
-  def any: Parser[String] = """.+""".r
-
-  def version: Parser[SemVersion] =
-    validVersion | log(invalidVersion)("inv version")
-
-  def validVersion: Parser[SemVersion] =    
+  def version: Parser[SemVersion] =    
     buildVersion | preReleaseVersion | normalVersion
 
   def buildVersion: Parser[Build.Version] =
-    versionTuple ~ classifier.? ~ (Plus ~> classifierSegs) ^^ {
+    versionTuple ~ classifier.? ~ (Plus ~> ids) ^^ {
       case ((major, minor, patch) ~ maybeClassifier ~ ids) =>
         Build.Version(major, minor, patch,
                       maybeClassifier.getOrElse(Nil) ++ ids)
@@ -33,11 +28,6 @@ object Parse extends RegexParsers {
     versionTuple ~ classifier ^^ {
       case ((major, minor, patch) ~ classifier) =>
         PreRelease.Version(major, minor, patch, classifier)
-    }
-
-  def invalidVersion: Parser[Invalid] =
-    any.* ^^ {
-      case cs => Invalid(cs mkString(""))
     }
 
   def normalVersion: Parser[Normal.Version] =
@@ -52,14 +42,17 @@ object Parse extends RegexParsers {
         (maj.toInt, min.toInt, pat.toInt)
   }
 
-  def classifierSegs: Parser[Seq[String]] =
+  def ids: Parser[Seq[String]] =
     rep1(id | Dot ~> id)
 
   def classifier: Parser[Seq[String]] =
-    Dash ~> classifierSegs
+    Dash ~> ids
 
-  def apply(in: String): ParseResult[SemVersion] =
-    parseAll(version, in)
+  def apply(in: String): SemVersion =
+    parseAll(version, in) match {
+      case Success(v, _) => v
+      case _ => Invalid(in)
+    }
 
   def main(a: Array[String]) {
     println(Parse(a(0)))
