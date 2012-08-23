@@ -5,18 +5,18 @@ trait Show[T <: SemVersion] {
 }
 
 object Show {
-  implicit object ShowNormal extends Show[Normal.Version] {
-    def show(v: Normal.Version) = "%d.%d.%d" format(
+  implicit object ShowNormal extends Show[NormalVersion] {
+    def show(v: NormalVersion) = "%d.%d.%d" format(
       v.major, v.minor, v.patch
     )
   }
-  implicit object ShowPreRelease extends Show[PreRelease.Version] {
-    def show(v: PreRelease.Version) = "" format(
+  implicit object ShowPreRelease extends Show[PreReleaseVersion] {
+    def show(v: PreReleaseVersion) = "" format(
       v.major, v.minor, v.patch
     )
   }
-  implicit object ShowBuild extends Show[Build.Version] {
-    def show(v: Build.Version) = "" format(
+  implicit object ShowBuild extends Show[BuildVersion] {
+    def show(v: BuildVersion) = "" format(
       v.major, v.minor, v.patch
     )
   }

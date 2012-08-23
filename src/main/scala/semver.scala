@@ -22,25 +22,21 @@ case class Invalid(raw: String) extends SemVersion {
   def patch = -1
 }
 
-object Normal {
-  abstract class AbstractVersion(major: Int, minor: Int, patch: Int)
-           extends SemVersion
-  case class Version(major: Int, minor: Int, patch: Int)
+abstract class AbstractVersion(major: Int, minor: Int, patch: Int)
+         extends SemVersion
+
+case class NormalVersion(major: Int, minor: Int, patch: Int)
+     extends AbstractVersion(major, minor, patch)
+
+
+case class PreReleaseVersion(major: Int,
+                     minor: Int,
+                     patch: Int,
+                     extras: Seq[String])
        extends AbstractVersion(major, minor, patch)
-}
 
-object PreRelease {
-  case class Version(major: Int,
+case class BuildVersion(major: Int,
                      minor: Int,
                      patch: Int,
                      extras: Seq[String])
-       extends Normal.AbstractVersion(major, minor, patch)
-}
-
-object Build {
-  case class Version(major: Int,
-                     minor: Int,
-                     patch: Int,
-                     extras: Seq[String])
-       extends Normal.AbstractVersion(major, minor, patch)
-}
+       extends AbstractVersion(major, minor, patch)

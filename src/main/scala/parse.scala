@@ -17,23 +17,23 @@ object Parse extends RegexParsers {
   def version: Parser[SemVersion] =    
     buildVersion | preReleaseVersion | normalVersion
 
-  def buildVersion: Parser[Build.Version] =
+  def buildVersion: Parser[BuildVersion] =
     versionTuple ~ classifier.? ~ (Plus ~> ids) ^^ {
       case ((major, minor, patch) ~ maybeClassifier ~ ids) =>
-        Build.Version(major, minor, patch,
+        BuildVersion(major, minor, patch,
                       maybeClassifier.getOrElse(Nil) ++ ids)
     }
 
-  def preReleaseVersion: Parser[PreRelease.Version] =
+  def preReleaseVersion: Parser[PreReleaseVersion] =
     versionTuple ~ classifier ^^ {
       case ((major, minor, patch) ~ classifier) =>
-        PreRelease.Version(major, minor, patch, classifier)
+        PreReleaseVersion(major, minor, patch, classifier)
     }
 
-  def normalVersion: Parser[Normal.Version] =
+  def normalVersion: Parser[NormalVersion] =
     versionTuple ^^ {
       case (major, minor, patch) =>
-        Normal.Version(major, minor, patch)
+        NormalVersion(major, minor, patch)
     }
 
   def versionTuple: Parser[(Int, Int, Int)] =

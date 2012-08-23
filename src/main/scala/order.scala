@@ -4,47 +4,47 @@ trait SemVersionOrdering extends Ordering[SemVersion] {
 
   def compare(self: SemVersion, that: SemVersion): Int =
     (self, that) match {
-      case (a: Normal.Version, b: Normal.Version) =>
+      case (a: NormalVersion, b: NormalVersion) =>
         byNormal(a, b)
-      case (a: Normal.Version, b: PreRelease.Version) =>
+      case (a: NormalVersion, b: PreReleaseVersion) =>
         byNormal(a, b) match {
           case 0 => 1
           case c => c
         }
-      case (a: Normal.Version, b: Build.Version) =>
+      case (a: NormalVersion, b: BuildVersion) =>
         byNormal(a, b) match {
           case 0 => -1
           case c => c
         }
-      case (a: PreRelease.Version, b: Normal.Version) =>
+      case (a: PreReleaseVersion, b: NormalVersion) =>
         byNormal(a, b) match {
           case 0 => -1
           case c => c
         }
-      case (a: PreRelease.Version, b: PreRelease.Version) =>
+      case (a: PreReleaseVersion, b: PreReleaseVersion) =>
         byNormal(a, b) match {
           case 0 =>
             byIds(a.extras, b.extras)
           case c => c
         }
-      case (a: PreRelease.Version, b: Build.Version) =>
+      case (a: PreReleaseVersion, b: BuildVersion) =>
         byNormal(a, b) match {
           case 0 =>
             byIds(a.extras, b.extras)
           case c => c
         }
-      case (a: Build.Version, b: Normal.Version) =>
+      case (a: BuildVersion, b: NormalVersion) =>
         byNormal(a, b) match {
           case 0 => 1
           case c => c
         }
-      case (a: Build.Version, b: PreRelease.Version) =>
+      case (a: BuildVersion, b: PreReleaseVersion) =>
         byNormal(a, b) match {
           case 0 =>
             byIds(a.extras, b.extras)
           case c => c
         }
-      case (a: Build.Version, b: Build.Version) =>
+      case (a: BuildVersion, b: BuildVersion) =>
         byNormal(a, b) match {
           case 0 =>
             byIds(a.extras, b.extras)
@@ -52,7 +52,7 @@ trait SemVersionOrdering extends Ordering[SemVersion] {
         }
     }
 
-  private def byNormal(a: Normal.AbstractVersion, b: Normal.AbstractVersion) =
+  private def byNormal(a: AbstractVersion, b: AbstractVersion) =
     a.major.compareTo(b.major) match {
       case 0 => a.minor.compareTo(b.minor) match {
         case 0 =>
