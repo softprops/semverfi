@@ -13,7 +13,9 @@ trait SemVersionOrdering extends Ordering[SemVersion] {
         }
       case (a: NormalVersion, b: BuildVersion) =>
         byNormal(a, b) match {
-          case 0 => -1
+          case 0 =>
+            if (b.unclassified) -1
+            else 1
           case c => c
         }
       case (a: PreReleaseVersion, b: NormalVersion) =>
@@ -24,30 +26,47 @@ trait SemVersionOrdering extends Ordering[SemVersion] {
       case (a: PreReleaseVersion, b: PreReleaseVersion) =>
         byNormal(a, b) match {
           case 0 =>
-            byIds(a.extras, b.extras)
+            byIds(a.classifier, b.classifier)
           case c => c
         }
       case (a: PreReleaseVersion, b: BuildVersion) =>
         byNormal(a, b) match {
           case 0 =>
-            byIds(a.extras, b.extras)
+            if (b.unclassified) -1
+            else byIds(a.classifier, b.classifier)
           case c => c
         }
       case (a: BuildVersion, b: NormalVersion) =>
         byNormal(a, b) match {
-          case 0 => 1
+          case 0 =>
+            if (a.unclassified) 1
+            else -1
           case c => c
         }
       case (a: BuildVersion, b: PreReleaseVersion) =>
         byNormal(a, b) match {
           case 0 =>
-            byIds(a.extras, b.extras)
+            if (a.unclassified) 1
+            else byIds(a.classifier, b.classifier) match {
+              case 0 => 1
+              case c => c
+            }
           case c => c
         }
       case (a: BuildVersion, b: BuildVersion) =>
         byNormal(a, b) match {
           case 0 =>
-            byIds(a.extras, b.extras)
+            if (a.unclassified || b.unclassified) {
+              if (a.unclassified && b.classified) 1
+              else if (a.classified && b.unclassified) -1
+              else byIds(a.build, b.build)
+            } else {
+              byIds(a.classifier, b.classifier) match {
+                case 0 =>
+                  byIds(a.build, b.build)
+                case c => c
+              }
+            }
           case c => c
         }
     }

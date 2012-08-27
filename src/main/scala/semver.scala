@@ -32,11 +32,15 @@ case class NormalVersion(major: Int, minor: Int, patch: Int)
 case class PreReleaseVersion(major: Int,
                      minor: Int,
                      patch: Int,
-                     extras: Seq[String])
-       extends AbstractVersion(major, minor, patch)
+                     classifier: Seq[String])
+     extends AbstractVersion(major, minor, patch)
 
 case class BuildVersion(major: Int,
                      minor: Int,
                      patch: Int,
-                     extras: Seq[String])
-       extends AbstractVersion(major, minor, patch)
+                     classifier: Seq[String],
+                     build: Seq[String])
+  extends AbstractVersion(major, minor, patch) {
+    lazy val classified = ! classifier.isEmpty
+    lazy val unclassified = ! classified
+}

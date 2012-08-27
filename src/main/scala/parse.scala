@@ -19,15 +19,17 @@ object Parse extends RegexParsers {
 
   def buildVersion: Parser[BuildVersion] =
     versionTuple ~ classifier.? ~ (Plus ~> ids) ^^ {
-      case ((major, minor, patch) ~ maybeClassifier ~ ids) =>
+      case ((major, minor, patch) ~ maybeClassifier ~ build) =>
         BuildVersion(major, minor, patch,
-                      maybeClassifier.getOrElse(Nil) ++ ids)
+                     maybeClassifier.getOrElse(Nil),
+                     build)
     }
 
   def preReleaseVersion: Parser[PreReleaseVersion] =
     versionTuple ~ classifier ^^ {
       case ((major, minor, patch) ~ classifier) =>
-        PreReleaseVersion(major, minor, patch, classifier)
+        PreReleaseVersion(major, minor, patch,
+                          classifier)
     }
 
   def normalVersion: Parser[NormalVersion] =

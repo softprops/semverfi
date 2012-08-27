@@ -11,15 +11,26 @@ object Show {
     )
   }
   implicit object ShowPreRelease extends Show[PreReleaseVersion] {
-    def show(v: PreReleaseVersion) = "" format(
-      v.major, v.minor, v.patch
+    def show(v: PreReleaseVersion) = "%d.%d.%d-%s" format(
+      v.major, v.minor, v.patch, v.classifier.mkString(".")
     )
   }
   implicit object ShowBuild extends Show[BuildVersion] {
-    def show(v: BuildVersion) = "" format(
-      v.major, v.minor, v.patch
+    def show(v: BuildVersion) = "%d.%d.%d%s+%s" format(
+      v.major, v.minor, v.patch,
+      v.classifier match {
+        case Nil => ""
+        case cs => cs.mkString("-", ".", "")
+      },
+      v.build.mkString(".")
     )
   }
-  def show[T <: SemVersion: Show](v: T) =
+  implicit object ShowInvalid extends Show[Invalid] {
+    def show(v: Invalid) = v match {
+      case Invalid(raw) => "invalid: %s" format raw
+    }
+  }
+
+  def apply[T <: SemVersion: Show](v: T) =
     implicitly[Show[T]].show(v)
 }
