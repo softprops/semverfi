@@ -1,5 +1,7 @@
 # semverfi
 
+[![Build Status](https://secure.travis-ci.org/softprops/semverfi.png)](http://travis-ci.org/softprops/semverfi)
+
 A library for parsing, querying, and ordering the always faithful, always loyal [semantic versions][sv]
 
 ## usage
