@@ -3,44 +3,38 @@ package semverfi
 // http://semver.org/
 
 object Version {
-  def apply(in: String): Either[Invalid, SemVersion] =
-    Parse(in) match {
-      case i: Invalid => Left(i)
-      case v => Right(v)
+  def apply(in: String): SemVersion =
+     Parse(in) match {
+      case Parse.Success(v, _) => v
+      case _ => Invalid(in)
     }
 }
 
-abstract class SemVersion extends Bumping {
+sealed trait SemVersion
+
+case class Invalid(raw: String) extends SemVersion
+
+abstract class Valid extends SemVersion with Bumping {
   def major: Int
   def minor: Int
   def patch: Int
 }
 
-case class Invalid(raw: String) extends SemVersion {
-  def major = -1
-  def minor = -1
-  def patch = -1
-}
-
-abstract class AbstractVersion(major: Int, minor: Int, patch: Int)
-         extends SemVersion
-
 case class NormalVersion(major: Int, minor: Int, patch: Int)
-     extends AbstractVersion(major, minor, patch)
-
+     extends Valid
 
 case class PreReleaseVersion(major: Int,
                      minor: Int,
                      patch: Int,
                      classifier: Seq[String])
-     extends AbstractVersion(major, minor, patch)
+     extends Valid
 
 case class BuildVersion(major: Int,
                      minor: Int,
                      patch: Int,
                      classifier: Seq[String],
                      build: Seq[String])
-  extends AbstractVersion(major, minor, patch) {
+  extends Valid {
     lazy val classified = ! classifier.isEmpty
     lazy val unclassified = ! classified
 }

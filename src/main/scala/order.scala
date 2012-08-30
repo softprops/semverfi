@@ -4,6 +4,9 @@ trait SemVersionOrdering extends Ordering[SemVersion] {
 
   def compare(self: SemVersion, that: SemVersion): Int =
     (self, that) match {
+      case (a: Invalid, b: Invalid) => 0
+      case (a: Invalid, _) => -1
+      case (a: NormalVersion, b: Invalid) => 1
       case (a: NormalVersion, b: NormalVersion) =>
         byNormal(a, b)
       case (a: NormalVersion, b: PreReleaseVersion) =>
@@ -18,6 +21,7 @@ trait SemVersionOrdering extends Ordering[SemVersion] {
             else 1
           case c => c
         }
+      case (a: PreReleaseVersion, b: Invalid) => 1
       case (a: PreReleaseVersion, b: NormalVersion) =>
         byNormal(a, b) match {
           case 0 => -1
@@ -36,6 +40,7 @@ trait SemVersionOrdering extends Ordering[SemVersion] {
             else byIds(a.classifier, b.classifier)
           case c => c
         }
+      case (a: BuildVersion, b: Invalid) => 1
       case (a: BuildVersion, b: NormalVersion) =>
         byNormal(a, b) match {
           case 0 =>
@@ -71,7 +76,7 @@ trait SemVersionOrdering extends Ordering[SemVersion] {
         }
     }
 
-  private def byNormal(a: AbstractVersion, b: AbstractVersion) =
+  private def byNormal(a: Valid, b: Valid) =
     a.major.compareTo(b.major) match {
       case 0 => a.minor.compareTo(b.minor) match {
         case 0 =>

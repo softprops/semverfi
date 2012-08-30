@@ -50,13 +50,6 @@ object Parse extends RegexParsers {
   def classifier: Parser[Seq[String]] =
     Dash ~> ids
 
-  def apply(in: String): SemVersion =
-    parseAll(version, in) match {
-      case Success(v, _) => v
-      case _ => Invalid(in)
-    }
-
-  def main(a: Array[String]) {
-    println(Parse(a(0)))
-  }
+  def apply(in: String) =
+    parseAll(version, in)
 }
