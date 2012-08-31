@@ -11,17 +11,7 @@ Get the major version from a string
 ```scala
 import semverfi._
 
-// prints 1
-Version("0.1.0").minor
-```
-
-Bump the major version
-
-```scala
-import semverfi._
-
-// prints Version(1,0,0)
-Version("0.1.0").fold(identity, (v => println(v.inc(Major))))
+Version("1.0.1-alpha.1").major
 ```
 
 Order versions
@@ -34,12 +24,7 @@ val expected = List("1.0.0-alpha", "1.0.0-alpha.1",  "1.0.0-beta.2", "1.0.0-beta
 
 val shuffled = shuffle(expected)
 
-val parsed = (List.empty[SemVersion] /: shuffled)((a, e) =>
-  Version(e) match {
-    case Right(v) => v :: a
-    case _ => a
-  }
-)
+val parsed = suffled.map(Version.apply)
 
 // print list of sorted versions
 parsed.sorted.foreach(println)
