@@ -1,7 +1,5 @@
 package semverfi
 
-// http://semver.org/
-
 object Version {
   def apply(in: String): SemVersion =
      Parse(in) match {
@@ -10,15 +8,19 @@ object Version {
     }
 }
 
-sealed trait SemVersion
-
-case class Invalid(raw: String) extends SemVersion
-
-abstract class Valid extends SemVersion with Bumping {
+sealed trait SemVersion {
   def major: Int
   def minor: Int
   def patch: Int
 }
+
+case class Invalid(raw: String) extends SemVersion {
+  def major = -1
+  def minor = -1
+  def patch = -1
+}
+
+abstract class Valid extends SemVersion with Bumping
 
 case class NormalVersion(major: Int, minor: Int, patch: Int)
      extends Valid

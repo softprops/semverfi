@@ -12,7 +12,7 @@ Get the major version from a string
 import semverfi._
 
 // prints 1
-Version("0.1.0").fold(identity, (v => println(v.minor)))
+Version("0.1.0").minor
 ```
 
 Bump the major version

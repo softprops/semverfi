@@ -6,38 +6,34 @@ case object Minor extends Digit
 case object Patch extends Digit
 
 trait Bumping { self: SemVersion =>
-  def inc(d: Digit) = d match {
-    case Major => self match {
-      case n @ NormalVersion(m, _, _) =>
-        n.copy(major = m + 1, minor = 0, patch = 0)
-      case _ => self 
-    }
-    case Minor => self match {
-      case n @ NormalVersion(_, m, _) =>
-        n.copy(minor = m + 1, patch = 0)
-      case _ => self
-    }
-    case Patch => self match {
-      case n @ NormalVersion(_, _, p) =>
-        n.copy(patch = p + 1)
-      case _ => self
-    }
+
+  def bumpMajor = self match {
+    case v @ NormalVersion(m, _, _) =>
+      v.copy(major = m + 1, minor = 0, patch = 0)
+    case v @ PreReleaseVersion(m, _, _, _) =>
+      v.copy(major = m + 1, minor = 0, patch = 0)
+    case v @ BuildVersion(m, _, _, _, _) =>
+      v.copy(major = m + 1, minor = 0, patch = 0)
+    case _ => self
   }
-  def dec(d: Digit) = d match {
-    case Major => self match {
-      case n @ NormalVersion(m, _, _) if (m > 1) =>
-        n.copy(major = m - 1)
-      case _ => self 
-    }
-    case Minor => self match {
-      case n @ NormalVersion(_, m, _) if (m > 1) =>
-        n.copy(minor = m - 1)
-      case _ => self
-    }
-    case Patch => self match {
-      case n @ NormalVersion(_, _, p) if (p > 1) =>
-        n.copy(patch = p - 1)
-      case _ => self
-    }
+
+  def bumpMinor = self match {
+    case v @ NormalVersion(_, m, _) =>
+      v.copy(minor = m + 1, patch = 0)
+    case v @ PreReleaseVersion(_, m, _, _) =>
+      v.copy(minor = m + 1, patch = 0)
+    case v @ BuildVersion(_, m, _, _, _) =>
+      v.copy(minor = m + 1, patch = 0)
+    case _ => self
+  }
+
+  def bumpPatch = self match {
+    case v @ NormalVersion(_, _, p) =>
+      v.copy(patch = p + 1)
+    case v @ PreReleaseVersion(_, _, p, _) =>
+      v.copy(patch = p + 1)
+    case v @ BuildVersion(_, _, p, _, _) =>
+      v.copy(patch = p + 1)
+    case _ => self
   }
 }
