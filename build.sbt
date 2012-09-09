@@ -23,7 +23,7 @@ libraryDependencies <+= scalaVersion( v =>
 
 publishMavenStyle := true
 
-publishTo := Some(Opts.resolver.sonatypeReleases)
+publishTo := Some(Opts.resolver.sonatypeStaging)
 
 publishArtifact in Test := false
 
