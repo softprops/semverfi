@@ -4,6 +4,21 @@
 
 A library for parsing, querying, and ordering the always faithful, always loyal [semantic versions][sv]
 
+
+## install
+
+### the cut and paste method
+
+Add the following to your sbt build definition
+
+    libraryDependencies += "me.lessis" % "semverfi" % "0.1.0"
+    
+### the civilized method
+
+Using [ls](https://github.com/softprops/ls#readme)
+
+    ls-install semverfi
+
 ## usage.
 
 
