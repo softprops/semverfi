@@ -1,0 +1,12 @@
+### Initial release
+
+Support for the [semver][semver] specification of...
+
+- the _structure_ of a version string
+- semantic ordering of collections of versions
+- semantic version bumping
+
+See the [readme][readme] for more information
+
+[semver]: http://semver.org/
+[readme]: https://github.com/softprops/semverfi#readme

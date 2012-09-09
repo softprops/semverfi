@@ -1,6 +1,6 @@
 organization := "me.lessis"
 
-version := "0.1.0-SNAPSHOT"
+version := "0.1.0"
 
 name := "semverfi"
 
@@ -42,4 +42,6 @@ pomExtra := (
     </developer>
   </developers>)
 
+seq(lsSettings:_*)
 
+LsKeys.tags in LsKeys.lsync := Seq("semver", "version")
