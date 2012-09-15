@@ -11,6 +11,8 @@ homepage := Some(url("https://github.com/softprops/semverfi"))
 crossScalaVersions := Seq("2.8.1","2.8.2","2.9.0","2.9.0-1",
                           "2.9.1", "2.9.1-1", "2.9.2")
 
+scalacOptions += "-deprecation"
+
 libraryDependencies <+= scalaVersion( v =>
   (v.split("[.-]").toList match {
     case "2" :: "8" :: _ => "org.scala-tools.testing" % "specs_2.8.1" % "1.6.8"
