@@ -14,7 +14,7 @@ object Parse extends RegexParsers {
 
   def int: Parser[String] = """\d+""".r
 
-  def version: Parser[SemVersion] =    
+  def version: Parser[SemVersion] =
     buildVersion | preReleaseVersion | normalVersion
 
   def buildVersion: Parser[BuildVersion] =
