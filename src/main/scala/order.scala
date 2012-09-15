@@ -1,9 +1,9 @@
 package semverfi
 
-trait SemVersionOrdering extends Ordering[SemVersion] {
+trait SemVersionOrdering extends Ordered[SemVersion] {
 
-  def compare(self: SemVersion, that: SemVersion): Int =
-    (self, that) match {
+  def compare(that: SemVersion): Int =
+    (this, that) match {
       case (a: Invalid, b: Invalid) => 0
       case (a: Invalid, _) => -1
       case (a: NormalVersion, b: Invalid) => 1
