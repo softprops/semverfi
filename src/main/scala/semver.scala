@@ -1,11 +1,7 @@
 package semverfi
 
 object Version {
-  def apply(in: String): SemVersion =
-     Parse(in) match {
-      case Parse.Success(v, _) => v
-      case _ => Invalid(in)
-    }
+  def apply(in: String): SemVersion = Parse(in)
 }
 
 sealed trait SemVersion extends SemVersionOrdering {

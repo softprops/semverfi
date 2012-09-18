@@ -1,6 +1,7 @@
 package semverfi
 
 import scala.util.parsing.combinator.RegexParsers
+import java.io.Reader
 
 object Parse extends RegexParsers {
 
@@ -10,11 +11,13 @@ object Parse extends RegexParsers {
 
   private val Dash = "-"
 
-  def id: Parser[String] = """[0-9A-Za-z-]+""".r
+  val id: Parser[String] = """[0-9A-Za-z-]+""".r
 
-  def int: Parser[String] = """\d+""".r
+  val int: Parser[String] = """\d+""".r
 
-  def version: Parser[SemVersion] =
+  val anything: Parser[String] = """[0-9A-Za-z\.\-\_\+]+""".r
+
+  val version: Parser[SemVersion] =
     buildVersion | preReleaseVersion | normalVersion
 
   def buildVersion: Parser[BuildVersion] =
@@ -42,6 +45,12 @@ object Parse extends RegexParsers {
     int ~ (Dot ~> int) ~ (Dot ~> int) ^^ {
       case (maj ~ min ~ pat) =>
         (maj.toInt, min.toInt, pat.toInt)
+  } | int ~ (Dot ~> int) ^^ {
+      case (maj ~ min) =>
+        (maj.toInt, min.toInt, 0)
+  } | int ^^ {
+      case (maj) =>
+        (maj.toInt, 0, 0)
   }
 
   def ids: Parser[Seq[String]] =
@@ -50,6 +59,8 @@ object Parse extends RegexParsers {
   def classifier: Parser[Seq[String]] =
     Dash ~> ids
 
-  def apply(in: String) =
-    parseAll(version, in)
+  def apply(in: String) = parseAll(version, in) match {
+    case Success(result, _) => result
+    case failure : NoSuccess => Invalid(in)
+  }
 }
