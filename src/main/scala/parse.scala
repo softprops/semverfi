@@ -1,7 +1,6 @@
 package semverfi
 
 import scala.util.parsing.combinator.RegexParsers
-import java.io.Reader
 
 object Parse extends RegexParsers {
 
@@ -59,8 +58,15 @@ object Parse extends RegexParsers {
   def classifier: Parser[Seq[String]] =
     Dash ~> ids
 
-  def apply(in: String) = parseAll(version, in) match {
-    case Success(result, _) => result
-    case failure : NoSuccess => Invalid(in)
+  def apply(in: String) = {
+    try {
+      parseAll(version, in) match {
+        case Success(result, _) => result
+        case failure : NoSuccess => Invalid(in)
+      }
+    } catch {
+      case e: NullPointerException => Invalid(in)
+    }
   }
+  
 }
