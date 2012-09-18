@@ -30,5 +30,12 @@ object OrderSpec extends Specification {
         .map (Version.apply)).min must_== PreReleaseVersion(1, 0, 0,
                                                               Seq("alpha"))
     }
+    "correctly order build and pre-release versions" in {
+      val v1 = Version("1.0.0-rc.1")
+      val v2 = Version("1.0.0-rc.1+build.1")
+      v1 must beLessThan(v2)
+      v2 must beGreaterThan(v1)
+      v1 must_!= v2
+    }
   }
 }
