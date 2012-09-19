@@ -31,4 +31,20 @@ object OrderSpec extends Specification {
                                                               Seq("alpha"))
     }
   }
+  "specific examples" should {
+    "order 2.1 after 1.2.1" in {
+      val v1 = Version("1.2.1")
+      val v2 = Version("2.1")
+      v1 must beLessThan(v2)
+      v2 must beGreaterThan(v1)
+      v1 must_!= v2
+    }
+    "order 2 after 1.2.1" in {
+      val v1 = Version("1.2.1")
+      val v2 = Version("2")
+      v1 must beLessThan(v2)
+      v2 must beGreaterThan(v1)
+      v1 must_!= v2
+    }
+  }
 }
