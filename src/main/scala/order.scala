@@ -37,7 +37,10 @@ trait SemVersionOrdering extends Ordered[SemVersion] {
         byNormal(a, b) match {
           case 0 =>
             if (b.unclassified) -1
-            else byIds(a.classifier, b.classifier)
+            else byIds(a.classifier, b.classifier) match {
+              case 0 => -1
+              case c => c
+            }
           case c => c
         }
       case (a: BuildVersion, b: Invalid) => 1
