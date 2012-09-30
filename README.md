@@ -11,7 +11,7 @@ A library for parsing, querying, and ordering the always faithful, always loyal 
 
 Add the following to your sbt build definition
 
-    libraryDependencies += "me.lessis" % "semverfi" % "0.1.0"
+    libraryDependencies += "me.lessis" % "semverfi" % "0.1.2"
     
 ### the civilized method
 
