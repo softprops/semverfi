@@ -1,0 +1,16 @@
+### Fixes/Enhancements
+
+Some fixes an enhancements with many thanks to [@sroebuck][sroebuck] for his contributions and suggestions.
+
+- `Show` now works with result type of parser [issue-2][i2]
+- `toString` now uses `Show` [issue-3][i3]
+- Short forms of verions are now expanded in to their semantic form [issue-6][i6] {[@sroebuck][sroebuck] }
+- Prefer implementing `Ordered` over `Ordering` for `>` and `<`. [issue-4][i4]
+- sorting fix [issue-5][i5] { [@sroebuck][sroebuck] }
+
+[sroebuck]: https://github.com/sroebuck
+[i2]: https://github.com/softprops/semverfi/issues/2
+[i3]: https://github.com/softprops/semverfi/issues/3
+[i4]: https://github.com/softprops/semverfi/issues/4
+[i5]: https://github.com/softprops/semverfi/pull/5
+[i6]: https://github.com/softprops/semverfi/pull/6

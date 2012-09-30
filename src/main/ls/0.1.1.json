@@ -1,0 +1,17 @@
+{
+  "organization" : "me.lessis",
+  "name" : "semverfi",
+  "version" : "0.1.1",
+  "description" : "Always Faithful, always loyal semantic versions",
+  "site" : "https://github.com/softprops/semverfi",
+  "tags" : [ "semver", "version" ],
+  "docs" : "",
+  "resolvers" : [ "https://oss.sonatype.org/content/repositories/releases" ],
+  "dependencies" : [ ],
+  "scalas" : [ "2.8.1", "2.8.2", "2.9.0", "2.9.0-1", "2.9.1", "2.9.1-1", "2.9.2" ],
+  "licenses" : [ {
+    "name" : "MIT",
+    "url" : "https://github.com/softprops/semverfi/blob/0.1.1/LICENSE"
+  } ],
+  "sbt" : false
+}
