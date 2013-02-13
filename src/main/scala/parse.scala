@@ -10,6 +10,8 @@ object Parse extends RegexParsers {
 
   private val Dash = "-"
 
+  private val SemverTag = "v"
+
   val id: Parser[String] = """[0-9A-Za-z-]+""".r
 
   val int: Parser[String] = """\d+""".r
@@ -41,7 +43,7 @@ object Parse extends RegexParsers {
     }
 
   def versionTuple: Parser[(Int, Int, Int)] =
-    int ~ (Dot ~> int) ~ (Dot ~> int) ^^ {
+    SemverTag.? ~> int ~ (Dot ~> int) ~ (Dot ~> int) ^^ {
       case (maj ~ min ~ pat) =>
         (maj.toInt, min.toInt, pat.toInt)
   } | int ~ (Dot ~> int) ^^ {
