@@ -17,7 +17,7 @@ case class Invalid(raw: String) extends SemVersion {
   def patch = -1
 }
 
-abstract class Valid extends SemVersion with Bumping
+abstract class Valid extends SemVersion with Bumping with Appending
 
 case class NormalVersion(major: Int, minor: Int, patch: Int)
    extends Valid
