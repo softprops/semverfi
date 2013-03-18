@@ -20,13 +20,13 @@ case class Invalid(raw: String) extends SemVersion {
 abstract class Valid extends SemVersion with Bumping
 
 case class NormalVersion(major: Int, minor: Int, patch: Int)
-     extends Valid
+   extends Valid
 
 case class PreReleaseVersion(major: Int,
                      minor: Int,
                      patch: Int,
                      classifier: Seq[String])
-     extends Valid
+   extends Valid
 
 case class BuildVersion(major: Int,
                      minor: Int,
