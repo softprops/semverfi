@@ -29,9 +29,7 @@ object Show {
   }
 
   implicit object ShowInvalid extends Show[Invalid] {
-    def show(v: Invalid) = v match {
-      case Invalid(raw) => "invalid: %s" format raw
-    }
+    def show(v: Invalid) = "invalid: %s" format v.raw
   }
 
   implicit object ShowSemVersion extends Show[SemVersion] {
