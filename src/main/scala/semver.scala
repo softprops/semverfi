@@ -17,23 +17,27 @@ case class Invalid(raw: String) extends SemVersion {
   def patch = -1
 }
 
-abstract class Valid extends SemVersion with Bumping with Appending
+sealed trait Valid extends SemVersion
+        with Bumping
+        with Appending
 
 case class NormalVersion(major: Int, minor: Int, patch: Int)
    extends Valid
 
-case class PreReleaseVersion(major: Int,
-                     minor: Int,
-                     patch: Int,
-                     classifier: Seq[String])
+case class PreReleaseVersion(
+  major: Int,
+  minor: Int,
+  patch: Int,
+  classifier: Seq[String])
    extends Valid
 
-case class BuildVersion(major: Int,
-                     minor: Int,
-                     patch: Int,
-                     classifier: Seq[String],
-                     build: Seq[String])
-  extends Valid {
+case class BuildVersion(
+  major: Int,
+  minor: Int,
+  patch: Int,
+  classifier: Seq[String],
+  build: Seq[String])
+ extends Valid {
     lazy val classified = ! classifier.isEmpty
     lazy val unclassified = ! classified
 }
