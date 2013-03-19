@@ -4,8 +4,10 @@ trait SemVersionOrdering extends Ordered[SemVersion] {
 
   def compare(that: SemVersion): Int =
     (this, that) match {
+
       case (a: Invalid, b: Invalid) => 0
       case (a: Invalid, _) => -1
+
       case (a: NormalVersion, b: Invalid) => 1
       case (a: NormalVersion, b: NormalVersion) =>
         byNormal(a, b)
@@ -21,6 +23,7 @@ trait SemVersionOrdering extends Ordered[SemVersion] {
             else 1
           case c => c
         }
+
       case (a: PreReleaseVersion, b: Invalid) => 1
       case (a: PreReleaseVersion, b: NormalVersion) =>
         byNormal(a, b) match {
@@ -43,6 +46,7 @@ trait SemVersionOrdering extends Ordered[SemVersion] {
             }
           case c => c
         }
+
       case (a: BuildVersion, b: Invalid) => 1
       case (a: BuildVersion, b: NormalVersion) =>
         byNormal(a, b) match {
@@ -77,6 +81,10 @@ trait SemVersionOrdering extends Ordered[SemVersion] {
             }
           case c => c
         }
+      case (_, _: BuildVersion | _: NormalVersion | _: PreReleaseVersion | _: Invalid) =>
+        // this satisfies the  2.10 compiler waring for scalas that will
+        // likely NOT happen
+        0
     }
 
   private def byNormal(a: Valid, b: Valid) =
