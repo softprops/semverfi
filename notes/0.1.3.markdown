@@ -1,0 +1,20 @@
+## changes
+
+- Parsing is lenient with versions following the old specs requirement of prefixing versions with `v`. i.e. `v0.1.0`. It was a [mistake](https://github.com/mojombo/semver/issues/1) that semver ever required it.
+
+- The act of bumping implies the discarding of the current pre-prerelease tag. See the discussion [here](https://github.com/mojombo/semver/issues/60).
+
+- SemVerions now expose an `opt` method with returns None or Some(validVersion). This removes the need to manually match to filter out Invalid versions. This makes working with lists of SemVersions parsed from user input more convenient
+
+   import semverfi._
+   rawStrings.map(Version.apply(_).opt).flatten // list of valid versions
+
+- `Valid` versions now mix in appending and normalizing behavior to transition between version types
+
+    import semverfi._
+    (Version("0.1.0").opt.map(
+     _.prelrelease("SNAPSHOT") // transition to pre-release version
+      .build("123")            // transition to build version
+      .normalize)              // and back to normal version
+
+- Parser thread safety. The parser for versions was previously and object by ut is now a class due to a mutable thread local in scala's parser combinators.
