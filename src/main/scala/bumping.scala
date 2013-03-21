@@ -9,35 +9,29 @@ case object Patch extends Digit
  * The act of bumping produces a new NormalVersion,
  *  discarding any previous pre-release and build suffixes
  */
-trait Bumping { self: SemVersion =>
+trait Bumping { self: Valid =>
 
-  def bumpMajor = self match {
-    case v @ NormalVersion(m, _, _) =>
-      v.copy(major = m + 1, minor = 0, patch = 0)
-    case v @ PreReleaseVersion(m, _, _, _) =>
-      NormalVersion(major = m + 1, minor = 0, patch = 0)
-    case v @ BuildVersion(m, _, _, _, _) =>
-      NormalVersion(major = m + 1, minor = 0, patch = 0)
+  def bumpMajor: Valid = self match {
+    case v: NormalVersion =>
+      v.copy(major = v.major + 1, minor = 0, patch = 0)
+    case v: Valid =>
+      v.normalize.bumpMajor
     case _ => self
   }
 
-  def bumpMinor = self match {
-    case v @ NormalVersion(_, m, _) =>
-      v.copy(minor = m + 1, patch = 0)
-    case v @ PreReleaseVersion(maj, m, _, _) =>
-      NormalVersion(major = maj, minor = m + 1, patch = 0)
-    case v @ BuildVersion(maj, m, _, _, _) =>
-      NormalVersion(major = maj, minor = m + 1, patch = 0)
+  def bumpMinor: Valid = self match {
+    case v: NormalVersion =>
+      v.copy(minor = v.minor + 1, patch = 0)
+    case v: Valid =>
+      v.normalize.bumpMinor
     case _ => self
   }
 
-  def bumpPatch = self match {
-    case v @ NormalVersion(_, _, p) =>
-      v.copy(patch = p + 1)
-    case v @ PreReleaseVersion(maj, min, p, _) =>
-      NormalVersion(major = maj, minor = min, patch = p + 1)
-    case v @ BuildVersion(maj, min, p, _, _) =>
-      NormalVersion(major = maj, minor = min, patch = p + 1)
+  def bumpPatch: Valid = self match {
+    case v: NormalVersion =>
+      v.copy(patch = v.patch + 1)
+    case v: Valid =>
+      v.normalize.bumpPatch
     case _ => self
   }
 }

@@ -2,7 +2,7 @@ package semverfi
 
 import scala.util.parsing.combinator.RegexParsers
 
-object Parse extends RegexParsers {
+class Parse extends RegexParsers {
 
   private val Dot = "."
 
@@ -18,7 +18,7 @@ object Parse extends RegexParsers {
 
   val anything: Parser[String] = """[0-9A-Za-z\.\-\_\+]+""".r
 
-  val version: Parser[SemVersion] =
+  def version: Parser[Valid] =
     buildVersion | preReleaseVersion | normalVersion
 
   def buildVersion: Parser[BuildVersion] =
@@ -60,15 +60,16 @@ object Parse extends RegexParsers {
   def classifier: Parser[Seq[String]] =
     Dash ~> ids
 
-  def apply(in: String) = {
-    try {
-      parseAll(version, in) match {
-        case Success(result, _) => result
-        case failure : NoSuccess => Invalid(in)
-      }
-    } catch {
-      case e: NullPointerException => Invalid(in)
+  def apply(in: String) = try {
+    parseAll(buildVersion | preReleaseVersion | normalVersion, in) match {
+      case success if (success.successful) => success.get
+      case failure => Invalid(in)
     }
+  } catch {
+    case e: NullPointerException => Invalid(in)
   }
-  
+}
+
+object Parse {
+  def apply(in: String): SemVersion = new Parse()(in)
 }
