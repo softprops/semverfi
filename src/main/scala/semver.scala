@@ -4,7 +4,6 @@ object Version {
   def apply(in: String) = Parse(in)
 }
 
-/** these get put at the bottom of ordered results */
 sealed trait SemVersion extends SemVersionOrdering {
   def major: Int
   def minor: Int
@@ -13,6 +12,7 @@ sealed trait SemVersion extends SemVersionOrdering {
   override def toString = Show(this)
 }
 
+/** these get lowest priority of ordered results */
 case class Invalid(raw: String) extends SemVersion {
   def major = -1
   def minor = -1
