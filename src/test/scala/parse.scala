@@ -31,5 +31,11 @@ object ParseSpec extends Specification {
     "parse versions prefixed with `v`" in {
       Parse("v0.1.0") must_== NormalVersion(0,1,0)
     }
+    "parse should short versions prefixed with `v`" in {
+      Parse("v0.1") must_== NormalVersion(0,1,0)
+    }
+    "parse very short versions prefixed with `v`" in {
+      Parse("v1") must_== NormalVersion(1,0,0)
+    }
   }
 }
