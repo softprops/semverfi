@@ -1,6 +1,8 @@
+import java.lang.Boolean.{ parseBoolean => bool }
+
 organization := "me.lessis"
 
-version := "0.1.2"
+version := "0.1.3-SNAPSHOT"
 
 name := "semverfi"
 
@@ -40,6 +42,12 @@ pomExtra := (
       <url>https://github.com/softprops</url>
     </developer>
   </developers>)
+
+logLevel in Global := { if (bool(sys.env.getOrElse("TRAVIS", "false"))) Level.Warn else Level.Info }
+
+logLevel in Compile := { if (bool(sys.env.getOrElse("TRAVIS", "false"))) Level.Warn else Level.Info }
+
+logLevel in Test := { if (bool(sys.env.getOrElse("TRAVIS", "false"))) Level.Info else Level.Info }
 
 //seq(lsSettings:_*)
 
