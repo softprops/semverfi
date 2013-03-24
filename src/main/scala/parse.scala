@@ -46,10 +46,10 @@ class Parse extends RegexParsers {
     SemverTag.? ~> int ~ (Dot ~> int) ~ (Dot ~> int) ^^ {
       case (maj ~ min ~ pat) =>
         (maj.toInt, min.toInt, pat.toInt)
-  } | int ~ (Dot ~> int) ^^ {
+  } | SemverTag.? ~> int ~ (Dot ~> int) ^^ {
       case (maj ~ min) =>
         (maj.toInt, min.toInt, 0)
-  } | int ^^ {
+  } | SemverTag.? ~> int ^^ {
       case (maj) =>
         (maj.toInt, 0, 0)
   }
