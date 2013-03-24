@@ -8,18 +8,15 @@ description := "Always Faithful, always loyal semantic versions"
 
 homepage := Some(url("https://github.com/softprops/semverfi"))
 
-crossScalaVersions := Seq("2.8.1","2.8.2","2.9.0","2.9.0-1",
-                          "2.9.1", "2.9.1-1", "2.9.2")
+crossScalaVersions := Seq("2.9.1-1", "2.9.2",
+                          "2.10.0", "2.10.1")
 
 scalacOptions += "-deprecation"
 
 libraryDependencies <+= scalaVersion( v =>
   (v.split("[.-]").toList match {
-    case "2" :: "8" :: _ => "org.scala-tools.testing" % "specs_2.8.1" % "1.6.8"
-    case "2" :: "9" :: "0" :: "1" :: _ => "org.scala-tools.testing" %% "specs" % "1.6.8"
-    case "2" :: "9" :: "0" :: Nil => "org.scala-tools.testing" %% "specs" % "1.6.8"
     case "2" :: "9" :: _ => "org.scala-tools.testing" % "specs_2.9.1" % "1.6.9"
-    case _ => sys.error("specs not supported for scala version %s" format v)
+    case _ => "org.scala-tools.testing" %% "specs" % "1.6.9"
   }) % "test"
 )
 
@@ -44,6 +41,6 @@ pomExtra := (
     </developer>
   </developers>)
 
-seq(lsSettings:_*)
+//seq(lsSettings:_*)
 
-LsKeys.tags in LsKeys.lsync := Seq("semver", "version")
+//LsKeys.tags in LsKeys.lsync := Seq("semver", "version")
