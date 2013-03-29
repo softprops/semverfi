@@ -2,7 +2,7 @@ import java.lang.Boolean.{ parseBoolean => bool }
 
 organization := "me.lessis"
 
-version := "0.1.3-SNAPSHOT"
+version := "0.1.3"
 
 name := "semverfi"
 
@@ -49,6 +49,6 @@ logLevel in Compile := { if (bool(sys.env.getOrElse("TRAVIS", "false"))) Level.W
 
 logLevel in Test := { if (bool(sys.env.getOrElse("TRAVIS", "false"))) Level.Info else Level.Info }
 
-//seq(lsSettings:_*)
+seq(lsSettings:_*)
 
-//LsKeys.tags in LsKeys.lsync := Seq("semver", "version")
+LsKeys.tags in LsKeys.lsync := Seq("semver", "version")
