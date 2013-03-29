@@ -1,6 +1,6 @@
 ## changes
 
-- Parsing is lenient with versions following the old specs requirement of prefixing versions with `v`. i.e. `v0.1.0`. It was a [mistake](https://github.com/mojombo/semver/issues/1) that semver ever required it.
+- Parsing is lenient with versions following the old spec's requirement of prefixing versions with `v`. i.e. `v0.1.0`. It was a [mistake](https://github.com/mojombo/semver/issues/1) that semver ever required it.
 
 - The act of bumping implies the discarding of the current pre-prerelease tag. See the discussion [here](https://github.com/mojombo/semver/issues/60).
 

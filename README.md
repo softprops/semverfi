@@ -11,7 +11,7 @@ A library for parsing, querying, and ordering the always faithful, always loyal 
 
 Add the following to your sbt build definition
 
-    libraryDependencies += "me.lessis" % "semverfi" % "0.1.2"
+    libraryDependencies += "me.lessis" % "semverfi" % "0.1.3"
     
 ### the civilized method
 
@@ -67,18 +67,22 @@ val parsed = shuffled.map(Version.apply)
 (parsed.sorted zip expected).foreach(println)
 ```
 
-### it bumps
+### it bumps ( valid versions )
 
 ```scala
 import semverfi._
-Version("1.1.1") match {
-  case version: Valid =>
-    println(version.bumpMajor) // NormalVersion(2,0,0)
-    println(version.bumpMinor) // NormalVersion(1,2,0)
-    println(version.bumpPatch) // NormalVersion(1,1,2)
-  case invalid =>
-    println("invalid version")
+Version("1.1.1").opt { version =>
+  println(version.bumpMajor) // NormalVersion(2,0,0)
+  println(version.bumpMinor) // NormalVersion(1,2,0)
+  println(version.bumpPatch) // NormalVersion(1,1,2)
 }
+```
+
+### it transitions ( valid versions )
+
+```scala
+import semverfi._
+Version("1.1.1").opt.map(_.prerelease("SNAPSHOT").build("123").normalize)
 ```
 
 Doug Tangren (softprops) 2012
